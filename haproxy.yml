@@ -1,0 +1,25 @@
+---
+- name: deploying Haproxy server
+  hosts: loadbalancer 
+  tasks:
+     - name: installing haproxy
+       package:
+            name: "haproxy"
+            state: present
+     - name: copying configutration file
+       template:
+             src: "haproxy.j2"
+             dest: "/etc/haproxy/haproxy.cfg"
+       notify: "restart service"
+     - name: starting service
+       service:
+            name: "haproxy"
+            state: started
+            enabled: yes
+
+  handlers:
+      - name: "restart service"
+        service:
+             name: "haproxy"
+             state: restarted
+
