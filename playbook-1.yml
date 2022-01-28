@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    # - name: Update yum
+    # yum: update_cache=yes
+
+    - name: start httpd 
+      service:
+         name: httpd
+         state: started
+   
+     
+      

@@ -1,0 +1,23 @@
+# Basic provisioning example
+---
+- name: launching ec2 instance
+  hosts: localhost
+  become: true
+  tasks:
+    - name: launching AWS instance using Ansible
+      amazon.aws.ec2:
+        aws_access_key: AKIA4NCU4AZE7NUU4D73
+        aws_secret_key: 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
+        key_name: web-server
+        instance_type: t2.micro
+        image: ami-0a0e2241200ee6c49
+        region: ap-south-1
+        wait: yes
+        wait_timeout: 500
+        group: ansible_web-sg
+        count: 1
+        instance_tags:
+            name: web-app
+        vpc_subnet_id: default
+        assign_public_ip: yes
+

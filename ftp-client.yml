@@ -1,0 +1,14 @@
+---
+- hosts: ftp-client
+  become: true
+  tasks:
+
+    - name: Install FTP package 
+      yum:
+        name: ftp
+        state: latest
+
+          #   - name: Start FTP Service
+          #service: name=vsftpd state=started enabled=yes
+
+

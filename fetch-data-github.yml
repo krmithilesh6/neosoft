@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+   - name: Download postfix mail playbook
+     get_url:
+       url:  https://github.com/krmithilesh6/neosoft/blob/628024c0ae0e1be1d7293042fca187450f177805/send-mail-test.yml
+       dest: /tmp/
+       mode: 0755
+

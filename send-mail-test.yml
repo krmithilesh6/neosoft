@@ -1,0 +1,11 @@
+- name: Sending mail using playbook
+  hosts: mailserver
+  tasks:
+    - name: sending mail to niteshkr.05042000@gmail.com
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: kr.mithilesh6@gmail.com
+        password: 33372648
+        subject: test mail
+        to: niteshkr.05042000@gmail.com

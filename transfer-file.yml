@@ -1,0 +1,9 @@
+---
+- hosts: ftp-client
+  become: true
+  tasks:
+     - name: Transfer the script
+       copy: src=transfer-script.sh dest=/root/ mode=0777
+
+     - name: Execute the script
+       command: sh /root/transfer-script.sh

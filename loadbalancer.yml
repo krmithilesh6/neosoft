@@ -1,0 +1,60 @@
+---
+#creating VMs
+- hosts: localhost
+  tasks:
+    - name: installing boto3
+      pip:
+        name: "boto3"
+        executable: pip3
+
+          # - name: creating security group
+          #ec2_group:
+          #aws_access_key: AKIA4NCU4AZEYSRJ4FFF
+          #aws_secret_key: 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
+          #name: 'launch-wizard-1'
+          #description: 'sg with rule description'
+          #vpc_id: 'vpc-2a25f241'
+          #tags:
+          # name: "loadbalancer-sg"
+          #region: "ap-south-1"
+          # rules:
+          # - proto: tcp
+          #  from_port: 22
+          #  to_port: 22
+          # cidr_ip: 0.0.0.0/0
+          # rule_desc: allow all on port 22 for ssh
+          #- proto: tcp
+          # cidr_ip: 0.0.0.0/0
+          # ports:
+          #   -80
+          # rule_desc: allow all on port 80 for webserver
+          #- proto: tcp
+          # cidr_ip: 0.0.0.0/0
+          # ports:
+          #   -8080
+          # rule_desc: allow all on port 8080 for loadbalancer
+          #rules_egress:
+          #- proto: all
+          # from_port: 0
+          # to_port: 0
+          # cidr_ip: 0.0.0.0/0
+
+    - name: "creating load balancer"
+      ec2:
+           count: 1
+           image: "ami-0a0e2241200ee6c49"
+           instance_type: t2.micro
+           region: "ap-south-1"
+           wait: yes
+           instance_tags:
+                   name: ansible_loadbalancer
+           group: "launch-wizard-1"
+           key_name: "load-key"
+           state: present
+           aws_access_key: AKIA4NCU4AZEYSRJ4FFF
+           aws_secret_key: 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
+
+
+
+
+          

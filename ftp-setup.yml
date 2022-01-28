@@ -1,0 +1,36 @@
+---
+- hosts: ftp-server
+  tasks:
+     - name: Install FTP package 
+       yum:
+        name: vsftpd
+        state: latest
+
+     - name: Start FTP Service
+       service: name=vsftpd state=started enabled=yes
+
+  # Modify FTP server configuration to allow Anonymous access.
+   #- block:
+     - name: Create home dir for anonymous user if it does not exists
+       file:
+         path: /var/ftp/pub
+         state: directory
+         mode: 0755
+
+     - name: Modify FTP configuation
+       lineinfile:
+        dest: /etc/vsftpd/vsftpd.conf
+        backup: yes
+        backrefs: yes
+        state: present
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+       with_items:
+        - { regexp: anonymous_enable=NO, line: anonymous_enable=YES }
+        - { regexp: anon_upload_enable, line: anon_upload_enable=YES }
+        - { regexp: anon_mkdir_write_enable, line: anon_mkdir_write_enable=YES }
+
+      # Reload FTP service to apply above chanegs.
+      # - block:
+     - name: Start FTP service
+       service: name=vsftpd state=restarted enabled=yes

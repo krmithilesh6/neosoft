@@ -1,0 +1,11 @@
+---
+- hosts: ftp-client
+  tasks:
+    - name: copy file from ftp-client to local
+      fetch: src=/tmp/ftp2.log dest=/tmp/ftp2.log
+
+- hosts: ftp-server
+  tasks:
+    - name: copy file from local to machine2
+      copy: src=/tmp/ftp2.log dest=/var/ftp/pub
+

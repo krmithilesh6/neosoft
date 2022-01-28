@@ -1,0 +1,50 @@
+- name: configuring postfix mail server
+  hosts: mailserver
+  vars:
+    pkg:
+      - postfix
+      - cyrus-sasl-plain
+      - mailx
+    svc: postfix
+  tasks:
+    - name: installing {{ pkg }} packages
+      yum:
+        name: "{{ pkg }}"
+        state: latest
+    - name: enabling and starting {{ svc }} service
+      service:
+        name: "{{ svc }}"
+        state: started
+        enabled: true
+    - name: adding required lines in /etc/postfix/main.cf file
+      template:
+        src: main.cf.j2
+        dest: /etc/postfix/main.cf
+    - name: configuring postfix sasl creds
+      copy:
+        content: '[smtp.gmail.com]:587 kr.mithilesh6@gmail.com:33372648'
+        dest: /etc/postfix/sasl_passwd
+        owner: root
+        group: postfix
+        mode: 0640
+    - name:
+      command: postmap /etc/postfix/sasl_passwd
+    - name: enabling and starting {{ svc }} service
+      service:
+        name: "{{ svc }}"
+        state: restarted
+
+- name: Sending mail using playbook
+  hosts: mailserver
+  tasks:
+    - name: sending mail to niteshkr.05042000@gmail.com
+      command: echo "Example Message" | mail - s "A mail sent using mailx" niteshkr.05042000@gmail.com
+      #    mail:
+      #  host: smtp.gmail.com
+      # port: 587
+      # username: kr.mithilesh6@gmail.com
+      # password: 33372648	
+      # subject: test mail
+      # to: niteshkr.05042001@gmail.com
+
+        sevice test purpose
